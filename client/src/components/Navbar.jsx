@@ -1,146 +1,80 @@
-import React from "react";
-import { FaBars, FaBell } from 'react-icons/fa'
+import React, { useState } from "react";
+import { FaBars, FaBell } from "react-icons/fa";
+import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 
-const Navbar = () => {
+const AppNavbar = () => {
+  const [expanded, setExpanded] = useState(false);
+  const [showNotificationsDropdown, setShowNotificationsDropdown] = useState(false);
+  const [showAvatarDropdown, setShowAvatarDropdown] = useState(false);
+
+  const toggleNavbar = () => {
+    setExpanded(!expanded);
+  };
+
+  const toggleNotificationsDropdown = () => {
+    setShowNotificationsDropdown(!showNotificationsDropdown);
+  };
+
+  const toggleAvatarDropdown = () => {
+    setShowAvatarDropdown(!showAvatarDropdown);
+  };
+
   return (
-    <div>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        {/*  Container wrapper  */}
-        <div class="container-fluid">
-          {/*  Toggle button  */}
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="/navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+    <Navbar bg="light" expand="lg" expanded={expanded}>
+      <Container>
+        <Navbar.Toggle onClick={toggleNavbar} aria-controls="basic-navbar-nav">
+          <FaBars />
+        </Navbar.Toggle>
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/">Dashboard</Nav.Link>
+            <Nav.Link href="/">Team</Nav.Link>
+            <Nav.Link href="/">Projects</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+        {/* Right elements */}
+        <div className="d-flex align-items-center ms-auto me-lg-0"> {/* Adjusted the classes */}
+          <a
+            className="text-reset me-3 dropdown-toggle hidden-arrow"
+            href="/"
+            id="navbarDropdownMenuLink"
+            onClick={toggleNotificationsDropdown}
+            aria-expanded={showNotificationsDropdown}
           >
-            <FaBars />
-          </button>
-
-          {/* Collapsible wrapper  */}
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {/* Navbar brand  */}
-            <a class="navbar-brand mt-2 mt-lg-0" href="/">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-                height="15"
-                alt="MDB Logo"
-                loading="lazy"
-              />
-            </a>
-            {/* Left links  */}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Dashboard
-                </a>
+            < FaBell />
+            <span className="badge rounded-pill badge-notification bg-danger">1</span>
+          </a>
+          {showNotificationsDropdown && (
+            <ul
+              className="dropdown-menu dropdown-menu-start" 
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <li>
+                <a className="dropdown-item" href="/">Some news</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Team
-                </a>
+              <li>
+                <a className="dropdown-item" href="/">Another news</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Projects
-                </a>
+              <li>
+                <a className="dropdown-item" href="/">Something else here</a>
               </li>
             </ul>
-            {/* Left links  */}
-          </div>
-          {/* <Collapsible wrapper  */}
+          )}
 
-          {/* //  Right elements  */}
-          <div class="d-flex align-items-center">
-            {/* Icon --> */}
-           
-
-            {/* Notifications  */}
-            <div class="dropdown">
-              <a
-                class="text-reset me-3 dropdown-toggle hidden-arrow"
-                href="/"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <FaBell />
-                <span class="badge rounded-pill badge-notification bg-danger">
-                  1
-                </span>
-              </a>
-              <ul
-                class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <li>
-                  <a class="dropdown-item" href="/">
-                    Some news
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/">
-                    Another news
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/">
-                    Something else here
-                  </a>
-                </li>
-              </ul>
-            </div>
-            {/* Avatar  */}
-            <div class="dropdown">
-              <a
-                class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                href="/"
-                id="navbarDropdownMenuAvatar"
-                role="button"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                  class="rounded-circle"
-                  height="25"
-                  alt="Black and White Portrait of a Man"
-                  loading="lazy"
-                />
-              </a>
-              <ul
-                class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdownMenuAvatar"
-              >
-                <li>
-                  <a class="dropdown-item" href="/">
-                    My profile
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/">
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/">
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          {/* Right elements  */}
+          <NavDropdown
+            title={<img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="Avatar" height="25" />}
+            id="basic-nav-dropdown"
+            show={showAvatarDropdown}
+            onClick={toggleAvatarDropdown}
+          >
+            <NavDropdown.Item href="/">My profile</NavDropdown.Item>
+            <NavDropdown.Item href="/">Settings</NavDropdown.Item>
+            <NavDropdown.Item href="/">Logout</NavDropdown.Item>
+          </NavDropdown>
         </div>
-        {/* Container wrapper  */}
-      </nav>
-      
-    </div>
+      </Container>
+    </Navbar>
   );
 };
 
-export default Navbar;
+export default AppNavbar;
